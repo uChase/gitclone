@@ -1,6 +1,7 @@
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.GZIPOutputStream;
 import java.math.BigInteger;
 
 public class Blob {
@@ -74,11 +75,12 @@ public class Blob {
 
     public static void writeToFile(String text, String fileName) {
         try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            BufferedWriter b = new BufferedWriter(fileWriter);
-            b.write(text);
-            b.close();
-            fileWriter.close();
+            FileOutputStream fos = new FileOutputStream(fileName);
+            GZIPOutputStream gzipOS = new GZIPOutputStream(fos);
+            byte[] bytes = text.getBytes();
+            gzipOS.write(bytes, 0, bytes.length);
+            gzipOS.close();
+            fos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
