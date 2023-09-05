@@ -14,9 +14,15 @@ public class Blob {
         }
     }
 
-    public Blob(String file) throws NoSuchAlgorithmException {
-        String sha = generateSHA(file);
+    String sha;
 
+    public Blob(String file) throws NoSuchAlgorithmException {
+        sha = generateSHA(file);
+
+    }
+
+    public String getSHA() {
+        return sha;
     }
 
     public static String generateSHA(String fileName) throws NoSuchAlgorithmException {
