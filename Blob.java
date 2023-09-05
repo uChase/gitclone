@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 public class Blob {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         try {
             Blob b = new Blob("test.txt");
         } catch (NoSuchAlgorithmException e) {
@@ -15,9 +15,9 @@ public class Blob {
         }
     }
 
-    String sha;
+    private String sha;
 
-    public Blob(String file) throws NoSuchAlgorithmException {
+    public Blob(String file) throws NoSuchAlgorithmException, FileNotFoundException {
         sha = generateSHA(file);
 
     }
@@ -26,7 +26,7 @@ public class Blob {
         return sha;
     }
 
-    public static String generateSHA(String fileName) throws NoSuchAlgorithmException {
+    public static String generateSHA(String fileName) throws NoSuchAlgorithmException, FileNotFoundException {
         MessageDigest digest = MessageDigest.getInstance("SHA-1");
         String content = readFile(fileName);
         byte[] messageDigest = digest.digest(content.getBytes());
@@ -41,7 +41,7 @@ public class Blob {
 
     }
 
-    public static String readFile(String file) {
+    public static String readFile(String file) throws FileNotFoundException {
         FileReader fr;
         try {
             fr = new FileReader(file);
@@ -68,9 +68,8 @@ public class Blob {
             return null;
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
     public static void writeToFile(String text, String fileName) {
