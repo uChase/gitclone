@@ -10,10 +10,11 @@ public class Git {
         Git git = new Git();
         try {
             git.init();
-            git.add("test.txt");
-            git.add("test2.txt");
             git.delete("test.txt");
-            git.delete("test2.txt");
+            git.add("test.txt");
+            // git.add("test2.txt");
+            // git.delete("test.txt");
+            // git.delete("test2.txt");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

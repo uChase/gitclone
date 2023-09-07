@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 public class Blob {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         try {
             Blob b = new Blob("test.txt");
         } catch (NoSuchAlgorithmException e) {
@@ -17,7 +17,7 @@ public class Blob {
 
     private String sha;
 
-    public Blob(String file) throws NoSuchAlgorithmException, FileNotFoundException {
+    public Blob(String file) throws NoSuchAlgorithmException, IOException {
         sha = generateSHA(file);
 
     }
@@ -26,10 +26,11 @@ public class Blob {
         return sha;
     }
 
-    public static String generateSHA(String fileName) throws NoSuchAlgorithmException, FileNotFoundException {
+    public static String generateSHA(String fileName) throws NoSuchAlgorithmException, IOException {
         MessageDigest digest = MessageDigest.getInstance("SHA-1");
-        String content = readFile(fileName);
-        byte[] messageDigest = digest.digest(content.getBytes());
+        String strContent = readFile(fileName);
+        byte[] content = compressToBinary(strContent);
+        byte[] messageDigest = digest.digest(content);
         BigInteger no = new BigInteger(1, messageDigest);
         String hashtext = no.toString(16);
         File dir = new File("./objects");
@@ -51,7 +52,6 @@ public class Blob {
             try {
                 while (br.ready()) {
                     c = br.readLine();
-                    System.out.println(c);
                     sub += c;
                     if (br.ready()) {
                         sub += "\n";
@@ -72,13 +72,18 @@ public class Blob {
         }
     }
 
-    public static void writeToFile(String text, String fileName) {
+    public static byte[] compressToBinary(String text) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOS = new GZIPOutputStream(baos)) {
+            gzipOS.write(text.getBytes("UTF-8"));
+        }
+        return baos.toByteArray();
+    }
+
+    public static void writeToFile(byte[] text, String fileName) {
         try {
             FileOutputStream fos = new FileOutputStream(fileName);
-            GZIPOutputStream gzipOS = new GZIPOutputStream(fos);
-            byte[] bytes = text.getBytes();
-            gzipOS.write(bytes, 0, bytes.length);
-            gzipOS.close();
+            fos.write(text, 0, text.length);
             fos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
