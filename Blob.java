@@ -1,6 +1,7 @@
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.math.BigInteger;
 
@@ -37,7 +38,7 @@ public class Blob {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        writeToFile(content, "./objects/" + hashtext);
+        writeToFile(content, "./objects/" + hashtext + ".zip");
         return hashtext;
 
     }
