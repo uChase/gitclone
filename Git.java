@@ -10,7 +10,7 @@ public class Git {
         Git git = new Git();
         try {
             git.init();
-            git.delete("test.txt");
+            // git.delete("test.txt");
             git.add("test.txt");
             // git.add("test2.txt");
             // git.delete("test.txt");
@@ -33,11 +33,12 @@ public class Git {
     }
 
     public void add(String fileName) throws NoSuchAlgorithmException, IOException {
-        if (existsAlready(fileName)) {
-            return;
-        }
         Blob newBlob = new Blob(fileName);
         String sha = newBlob.getSHA();
+        if (existsAlready(fileName, sha)) {
+            return;
+        }
+        delete(fileName);
         FileWriter fileWriter = new FileWriter("index", true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write(fileName + " : " + sha + '\n');
@@ -64,7 +65,8 @@ public class Git {
                 bw.write(line);
                 bw.write('\n');
             } else {
-                File deleteFile = new File("./objects/" + name[2]);
+                System.out.println("ran");
+                File deleteFile = new File("./objects/" + name[2] + ".zip");
                 deleteFile.delete();
             }
 
@@ -77,14 +79,14 @@ public class Git {
 
     }
 
-    public boolean existsAlready(String fileName) throws IOException {
+    public boolean existsAlready(String fileName, String hash) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("index"));
 
         String line;
         while (br.ready()) {
             line = br.readLine();
             String[] name = line.split("\\s+");
-            if (name[0].equals(fileName)) {
+            if (name[0].equals(fileName) && name[2].equals(hash)) {
                 br.close();
                 return true;
             }
