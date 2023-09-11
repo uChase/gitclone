@@ -73,11 +73,10 @@ public class Git {
             }
 
         }
-
-        ogFile.delete();
-        temp.renameTo(ogFile);
         br.close();
         bw.close();
+        ogFile.delete();
+        temp.renameTo(ogFile);
 
     }
 
