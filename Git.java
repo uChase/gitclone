@@ -12,8 +12,10 @@ public class Git {
             git.init();
             // git.delete("test.txt");
             git.add("test.txt");
-            // git.add("test2.txt");
-            // git.delete("test.txt");
+            git.add("test2.txt");
+            git.delete("test.txt");
+
+            git.add("test3.txt");
             // git.delete("test2.txt");
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -66,7 +68,7 @@ public class Git {
                 bw.write('\n');
             } else {
                 System.out.println("ran");
-                File deleteFile = new File("./objects/" + name[2] + ".zip");
+                File deleteFile = new File("./objects/" + name[2]);
                 deleteFile.delete();
             }
 

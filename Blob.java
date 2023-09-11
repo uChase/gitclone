@@ -38,7 +38,7 @@ public class Blob {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        writeToFile(content, "./objects/" + hashtext + ".zip");
+        writeToFile(content, "./objects/" + hashtext);
         return hashtext;
 
     }
