@@ -11,24 +11,24 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ExampleTester {
+public class JunitTester {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        /*
-         * Utils.writeStringToFile("junit_example_file_data.txt", "test file contents");
-         * Utils.deleteFile("index");
-         * Utils.deleteDirectory("objects");
-         */
+
+        Utils.writeStringToFile("junit_example_file_data.txt", "test file contents");
+        Utils.deleteFile("index");
+        Utils.deleteDirectory("objects");
+
     }
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        /*
-         * Utils.deleteFile("junit_example_file_data.txt");
-         * Utils.deleteFile("index");
-         * Utils.deleteDirectory("objects");
-         */
+
+        Utils.deleteFile("junit_example_file_data.txt");
+        Utils.deleteFile("index");
+        Utils.deleteDirectory("objects");
+
     }
 
     @Test
@@ -36,6 +36,7 @@ public class ExampleTester {
     void testInitialize() throws Exception {
 
         // Run the person's code
+
         // TestHelper.runTestSuiteMethods("testInitialize");
 
         // check if the file exists
