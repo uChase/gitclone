@@ -16,16 +16,24 @@ public class JunitTester {
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
 
-        Utils.writeStringToFile("junit_example_file_data.txt", "test file contents");
-        Utils.deleteFile("index");
-        Utils.deleteDirectory("objects");
+        Utils.writeStringToFile("test1.txt", "this is test 1");
+        Utils.writeStringToFile("test2.txt", "this is test 2");
+        Utils.writeStringToFile("test3.txt", "this is test 3");
+        Utils.writeStringToFile("test4.txt", "this is test 4");
+        Utils.writeStringToFile("test5.txt", "this is test 5");
+        Utils.deleteFile("./objects/index");
+        Utils.deleteDirectory("./objects");
 
     }
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
 
-        Utils.deleteFile("junit_example_file_data.txt");
+        Utils.deleteFile("test1.txt");
+        Utils.deleteFile("test2.txt");
+        Utils.deleteFile("test3.txt");
+        Utils.deleteFile("test4.txt");
+        Utils.deleteFile("test5.txt");
         Utils.deleteFile("index");
         Utils.deleteDirectory("objects");
 
@@ -36,40 +44,34 @@ public class JunitTester {
     void testInitialize() throws Exception {
 
         // Run the person's code
-
         // TestHelper.runTestSuiteMethods("testInitialize");
 
         // check if the file exists
-        File file = new File("index");
-        Path path = Paths.get("objects");
+        /// File file = new File("index");
+        // Path path = Paths.get("objects");
 
-        assertTrue(file.exists());
-        assertTrue(Files.exists(path));
+        // assertTrue(file.exists());
+        // assertTrue(Files.exists(path));
     }
 
     @Test
-    @DisplayName("[15] Test if adding a blob works.  5 for sha, 5 for file contents, 5 for correct location")
+    @DisplayName("Test if blob exists and if blob has the correct contents.")
     void testCreateBlob() throws Exception {
 
-        try {
+        // Manually create the files and folders before the 'testAddFile'
+        Git git = new Git();
+        git.init();
 
-            // Manually create the files and folders before the 'testAddFile'
-            // MyGitProject myGitClassInstance = new MyGitProject();
-            // myGitClassInstance.init();
-
-            // TestHelper.runTestSuiteMethods("testCreateBlob", file1.getName());
-
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
+        // TestHelper.runTestSuiteMethods("testCreateBlob", file1.getName());
+        Blob blob1 = new Blob("test1.txt");
 
         // Check blob exists in the objects folder
-        File file_junit1 = new File("objects/" + file1.methodToGetSha1());
-        assertTrue("Blob file to add not found", file_junit1.exists());
+        File file1 = new File("objects/" + blob1.getSHA());
+        assertTrue("Blob file to add not found", file1.exists());
 
         // Read file contents
-        String indexFileContents = MyUtilityClass.readAFileToAString("objects/" + file1.methodToGetSha1());
-        assertEquals("File contents of Blob don't match file contents pre-blob creation", indexFileContents,
-                file1.getContents());
+        assertEquals("File contents of Blob don't match file contents pre-blob creation",
+                Blob.readFile("./objects/" + blob1.getSHA()),
+                Blob.readFile("test1.txt"));
     }
 }

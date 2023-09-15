@@ -13,11 +13,11 @@ public class Utils {
     public static void writeStringToFile(String filename, String contents) throws IOException {
 
         File file = new File(filename);
-        if (file.exists()) {
-            FileWriter writer = new FileWriter(file);
-            writer.write(contents);
-            writer.close();
-        }
+
+        FileWriter writer = new FileWriter(file);
+        writer.write(contents);
+        writer.close();
+
     }
 
     public static void deleteDirectory(String directoryName) {
