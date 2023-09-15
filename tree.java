@@ -9,9 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 
-public class tree {
+public class Tree {
     public static void main(String[] args) throws Exception {
-        tree treeTest = new tree();
+        Tree treeTest = new Tree();
         treeTest.add("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt");
         treeTest.add("blob : 01d82591292494afd1602d175e165f94992f6f5f : file2.txt");
         treeTest.add("blob : f1d82236ab908c86ed095023b1d2e6ddf78a6d83 : file3.txt");
@@ -27,7 +27,7 @@ public class tree {
     File treeFile;
     ArrayList<String> list;
 
-    public tree() {
+    public Tree() {
         treeHoldingFile = new File("treeHoldingFile");
         list = new ArrayList<String>();
     }
@@ -92,7 +92,7 @@ public class tree {
         return contents.toString();
     }
 
-    private String getSHA(String fileContents) {
+    public String getSHA(String fileContents) {
         String sha1 = "";
         try {
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");
@@ -116,5 +116,9 @@ public class tree {
         String result = formatter.toString();
         formatter.close();
         return result;
+    }
+
+    public String getListObject(int position) {
+        return list.get(position);
     }
 }
