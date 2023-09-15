@@ -38,7 +38,7 @@ public class Blob {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        writeToFile(strContent, "./objects/" + hashtext);
+        writeToFile(content, "./objects/" + hashtext);
         return hashtext;
 
     }
@@ -81,12 +81,11 @@ public class Blob {
         return baos.toByteArray();
     }
 
-    public static void writeToFile(String text, String fileName) {
+    public static void writeToFile(byte[] text, String fileName) {
         try {
-            File file = new File(fileName);
-            FileWriter writer = new FileWriter(file);
-            writer.write(text);
-            writer.close();
+            FileOutputStream fos = new FileOutputStream(fileName);
+            fos.write(text, 0, text.length);
+            fos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
