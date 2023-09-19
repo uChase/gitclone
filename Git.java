@@ -5,6 +5,8 @@ import java.util.zip.GZIPOutputStream;
 import java.math.BigInteger;
 
 public class Git {
+    int numberOfFiles = 0;
+
     public static void main(String[] args) throws Exception {
         Git git = new Git();
         git.init();
@@ -33,9 +35,13 @@ public class Git {
         delete(fileName);
         FileWriter fileWriter = new FileWriter("index", true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(fileName + " : " + sha + '\n');
+        if (numberOfFiles != 0) {
+            bufferedWriter.write('\n');
+        }
+        bufferedWriter.write(fileName + " : " + sha);
         bufferedWriter.close();
         fileWriter.close();
+        numberOfFiles++;
 
     }
 
@@ -60,6 +66,7 @@ public class Git {
                 System.out.println("ran");
                 File deleteFile = new File("./objects/" + name[2]);
                 deleteFile.delete();
+                numberOfFiles--;
             }
 
         }
