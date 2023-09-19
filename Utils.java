@@ -1,15 +1,25 @@
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class Utils {
+    public static void main(String[] args) throws Exception {
+        System.out.print(Utils.compressAndHash("hello"));
+    }
+
     public static void deleteFile(String filename) {
         File file = new File(filename);
         if (file.exists()) {
@@ -76,5 +86,35 @@ public class Utils {
         String result = formatter.toString();
         formatter.close();
         return result;
+    }
+
+    public static String compressAndHash(String contents) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+
+        byte[] content = compressToBinary(contents);
+        byte[] messageDigest = digest.digest(content);
+        BigInteger no = new BigInteger(1, messageDigest);
+        String hashtext = no.toString(16);
+        return hashtext;
+    }
+
+    public static byte[] compressToBinary(String text) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOS = new GZIPOutputStream(baos)) {
+            gzipOS.write(text.getBytes("UTF-8"));
+        }
+        return baos.toByteArray();
+    }
+
+    public static void writeToFile(byte[] text, String fileName) {
+        try {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            fos.write(text, 0, text.length);
+            fos.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 }
