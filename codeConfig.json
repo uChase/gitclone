@@ -1,0 +1,69 @@
+[
+  {
+    "className": "Git",
+    "constructorConfigs": [
+      {
+        "parameterTypes": [],
+        "values": []
+      }
+    ],
+    "methodConfigs": [
+      {
+        "methodName": "init",
+        "parameters": [],
+        "values": []
+      },
+      {
+        "methodName": "add",
+        "parameters": ["String"],
+        "values": ["test.txt"]
+      },
+      {
+        "methodName": "delete",
+        "parameters": ["String"],
+        "values": ["test.txt"]
+      },
+      {
+        "methodName": "existsAlready",
+        "parameters": ["String", "String"],
+        "values": ["test.txt", "sha"]
+      }
+    ]
+  },
+  {
+    "className": "Blob",
+    "constructorConfigs": [
+      {
+        "parameterTypes": ["String"],
+        "values": ["test.txt"]
+      }
+    ],
+    "methodConfigs": [
+      {
+        "methodName": "getSHA",
+        "parameters": [],
+        "values": []
+      },
+      {
+        "methodName": "generateSHA",
+        "parameters": ["String"],
+        "values": ["test.txt"]
+      },
+      {
+        "methodName": "readFile",
+        "parameters": ["String"],
+        "values": ["test.txt"]
+      },
+      {
+        "methodName": "compressToBinary",
+        "parameters": ["String"],
+        "values": ["content"]
+      },
+      {
+        "methodName": "writeToFile",
+        "parameters": ["strContent", "String"],
+        "values": ["content", "test.txt"]
+      }
+    ]
+  }
+]

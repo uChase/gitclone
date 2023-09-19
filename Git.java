@@ -5,22 +5,12 @@ import java.util.zip.GZIPOutputStream;
 import java.math.BigInteger;
 
 public class Git {
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    public static void main(String[] args) throws Exception {
         Git git = new Git();
-        try {
-            git.init();
-            // git.delete("test.txt");
-            git.add("test.txt");
-            git.add("test2.txt");
-            git.delete("test.txt");
+        git.init();
+        git.add("test1.txt");
+        git.add("test2.txt");
 
-            git.add("test3.txt");
-            // git.delete("test2.txt");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     public void init() throws IOException {
