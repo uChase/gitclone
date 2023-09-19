@@ -37,11 +37,9 @@ public class BlobTest {
         String hash1 = Utils.compressAndHash("this is test 1");
         File file1 = new File("./objects/" + hash1);
         byte[] bytes = Utils.compressToBinary("test1.txt");
-        File file2 = new File("testFile");
-        Utils.writeToFile(bytes, "testFile");
         assertTrue("Blob is not created", file1.exists());
-        assertEquals("Blob has the correct contents", Utils.getFileContents(file1),
-                Utils.getFileContents(file2));
+        assertEquals("Blob has the correct contents", Utils.readFromCompressedFile(file1),
+                "this is test 1");
 
     }
 
@@ -64,8 +62,10 @@ public class BlobTest {
         Blob blob = new Blob("test1.txt");
         byte[] bytes = Utils.compressToBinary("test1.txt");
         blob.writeToFile(bytes, "test2.txt");
+        File file2 = new File("test3.txt");
+        Utils.writeToFile(bytes, "test3.txt");
         File file = new File("test2.txt");
-        assertEquals("Write to file is wrong", Utils.getFileContents(file), bytes);
+        assertEquals("Write to file is wrong", Utils.getFileContents(file), Utils.getFileContents(file2));
 
     }
 }

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -115,6 +116,23 @@ public class Utils {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+    }
+
+    public static String readFromCompressedFile(File file) throws Exception {
+        FileInputStream filestream = new FileInputStream(file);
+        GZIPInputStream inputstream = new GZIPInputStream(filestream);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] bytes = new byte[1024];
+        int length;
+        StringBuilder string = new StringBuilder();
+        while ((length = inputstream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, length);
+        }
+        outputStream.close();
+        inputstream.close();
+        filestream.close();
+        return outputStream.toString("UTF-8");
 
     }
 }
