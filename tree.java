@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Formatter;
 
 public class Tree {
-
+    String sha;
     File treeHoldingFile;
     File treeFile;
     ArrayList<String> list;
@@ -20,8 +20,15 @@ public class Tree {
         list = new ArrayList<String>();
     }
 
+    public String getSha(){
+        return sha;
+    }
+
     public void add(String treeEntry) throws Exception {
-        String substring = treeEntry.substring(0, 4);
+        String substring = "";
+        if (treeEntry.length() > 4){
+            substring = treeEntry.substring(0, 4);
+        }
         if (substring.equals("tree")) {
             String sha = treeEntry.substring(7, treeEntry.length());
             for (int i = 0; i < list.size(); i++) {
@@ -67,7 +74,6 @@ public class Tree {
         FileWriter treeWriter = new FileWriter(treeFile);
         treeWriter.write(contents);
         treeWriter.close();
-
     }
 
     public String getFileContents(File file) throws IOException {
@@ -92,6 +98,7 @@ public class Tree {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        this.sha = sha1;
         return sha1;
     }
 
