@@ -31,9 +31,14 @@ public class Git {
             return;
         }
         delete(fileName);
+
         FileWriter fileWriter = new FileWriter("index", true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(fileName + " : " + sha + '\n');
+        File file = new File("index");
+        if (file.length() != 0) {
+            bufferedWriter.write('\n');
+        }
+        bufferedWriter.write(fileName + " : " + sha);
         bufferedWriter.close();
         fileWriter.close();
 

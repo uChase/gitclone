@@ -9,7 +9,8 @@ public class Blob {
 
     public static void main(String[] args) throws IOException {
         try {
-            Blob b = new Blob("test.txt");
+            Blob b = new Blob("contents.txt");
+            System.out.println(b.getSHA());
         } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

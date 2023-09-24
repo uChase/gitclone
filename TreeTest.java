@@ -3,22 +3,73 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.EnumSet;
 
 public class TreeTest {
     Tree tree1 = new Tree();
 
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
-        File objects = new File("./objects");
-        objects.mkdir();
+    @BeforeEach
+    public void setup() throws IOException {
+        File Objects = new File("objects");
+        if (!Objects.exists()) {
+            Objects.mkdirs();
+        }
+        File testDir = new File("test");
+        if (!testDir.exists()) {
+            testDir.mkdirs();
+        }
+        Files.write(Paths.get("test/test.txt"), "t1".getBytes());
+        Files.write(Paths.get("test/test1.txt"), "t2".getBytes());
+        File testDir1 = new File("test/testD");
+        if (!testDir1.exists()) {
+            testDir1.mkdirs();
+        }
+        Files.write(Paths.get("test/testD/test2.txt"), "t3".getBytes());
+
     }
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
+        Path testDir = Path.of("./test/");
+        deleteDirectory(testDir);
+        Path objects = Path.of("./objects/");
+        deleteDirectory(objects);
+
+    }
+
+    public static void deleteDirectory(Path dir) throws IOException {
+        Files.walkFileTree(dir, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE,
+                new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        Files.delete(file);
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                        Files.delete(dir);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
     }
 
     @Test
@@ -93,5 +144,19 @@ public class TreeTest {
         File treeFile = new File("./objects/" + Utils.getSHA(contents));
         assertTrue("treefile not made", treeFile.exists());
         assertEquals("treefile not made correctly", contents, Utils.getFileContents(treeFile));
+    }
+
+    @Test
+    void testAddDirectory() throws Exception {
+        Tree dirTree = new Tree();
+        dirTree.addDirectory("test");
+
+        dirTree.writeToTree();
+
+        File treeFile = new File("./objects/" + dirTree.getSha());
+
+        assertEquals("blob : 6e024e7c960af207eb62ee22492e5a2e2f43d11d : test1.txt\n" + //
+                "blob : 2cc6e72f9bcfb65337b441d909835943ae5e944 : test.txt\n" + //
+                "tree : 1c05d283db6a7c2f7a9712f713565ad20b59d2f4 : testD", Utils.getFileContents(treeFile));
     }
 }

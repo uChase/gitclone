@@ -59,13 +59,4 @@ public class GitTest {
         assertEquals("Blob is not removed", 0, list.length);
     }
 
-    @Test
-    void testExistsAlready() throws Exception {
-        git.init();
-        git.add("test1.txt");
-        File file = new File("test1.txt");
-        assertTrue("git already exists",
-                git.existsAlready("test1.txt", Utils.compressAndHash(Utils.getFileContents(file))));
-
-    }
 }

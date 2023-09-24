@@ -15,18 +15,23 @@ public class Tree {
     File treeFile;
     ArrayList<String> list;
 
+    public static void main(String[] args) throws Exception {
+        Tree tree = new Tree();
+        tree.addDirectory("./test/");
+    }
+
     public Tree() {
         treeHoldingFile = new File("treeHoldingFile");
         list = new ArrayList<String>();
     }
 
-    public String getSha(){
+    public String getSha() {
         return sha;
     }
 
     public void add(String treeEntry) throws Exception {
         String substring = "";
-        if (treeEntry.length() > 4){
+        if (treeEntry.length() > 4) {
             substring = treeEntry.substring(0, 4);
         }
         if (substring.equals("tree")) {
@@ -115,5 +120,34 @@ public class Tree {
 
     public String getListObject(int position) {
         return list.get(position);
+    }
+
+    public String addDirectory(String directoryPath) throws Exception {
+        return addDirectory(directoryPath, false);
+
+    }
+
+    private String addDirectory(String directoryPath, boolean isRecursion) throws Exception {
+        File dir = new File(directoryPath);
+        if (!dir.isDirectory()) {
+            throw new Exception("shut yo bitch ass up");
+        }
+        File files[] = dir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                Tree tempTree = new Tree();
+                tempTree.addDirectory(file.getPath(), true);
+                add("tree : " + tempTree.getSha() + " : " + file.getName());
+            } else {
+                Blob b = new Blob(file.getPath());
+                add("blob : " + b.getSHA() + " : " + file.getName());
+            }
+        }
+
+        if (isRecursion) {
+            writeToTree();
+        }
+
+        return getSha();
     }
 }
