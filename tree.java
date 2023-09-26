@@ -133,6 +133,9 @@ public class Tree {
             throw new Exception("shut yo bitch ass up");
         }
         File files[] = dir.listFiles();
+        if (files.length == 0) {
+            add("");
+        }
         for (File file : files) {
             if (file.isDirectory()) {
                 Tree tempTree = new Tree();

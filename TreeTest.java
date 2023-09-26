@@ -44,12 +44,35 @@ public class TreeTest {
         }
         Files.write(Paths.get("test/testD/test2.txt"), "t3".getBytes());
 
+        File testDir2 = new File("test2");
+        if (!testDir2.exists()) {
+            testDir2.mkdirs();
+        }
+        Files.write(Paths.get("test2/test.txt"), "t1".getBytes());
+        Files.write(Paths.get("test2/test1.txt"), "t2".getBytes());
+        File testDir3 = new File("test2/testD");
+        if (!testDir3.exists()) {
+            testDir3.mkdirs();
+        }
+        File testDir4 = new File("test2/testD/testD2");
+        if (!testDir4.exists()) {
+            testDir4.mkdirs();
+        }
+
+        Files.write(Paths.get("test2/testD/testD2.txt"), "t23".getBytes());
+
+        File testDir5 = new File("test2/testD2");
+        if (!testDir5.exists()) {
+            testDir5.mkdirs();
+        }
     }
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
         Path testDir = Path.of("./test/");
         deleteDirectory(testDir);
+        Path testDir2 = Path.of("./test2/");
+        deleteDirectory(testDir2);
         Path objects = Path.of("./objects/");
         deleteDirectory(objects);
 
@@ -151,12 +174,32 @@ public class TreeTest {
         Tree dirTree = new Tree();
         dirTree.addDirectory("test");
 
+        Tree dirTree2 = new Tree();
+
+        dirTree2.addDirectory("test2");
+
         dirTree.writeToTree();
+        dirTree2.writeToTree();
 
         File treeFile = new File("./objects/" + dirTree.getSha());
 
-        assertEquals("blob : 6e024e7c960af207eb62ee22492e5a2e2f43d11d : test1.txt\n" + //
+        assertEquals("blob : 6e024e7c960af207eb62ee22492e5a2e2f43d11d : test1.txt\n"
+                + //
                 "blob : 2cc6e72f9bcfb65337b441d909835943ae5e944 : test.txt\n" + //
-                "tree : 1c05d283db6a7c2f7a9712f713565ad20b59d2f4 : testD", Utils.getFileContents(treeFile));
+                "tree : 1c05d283db6a7c2f7a9712f713565ad20b59d2f4 : testD",
+                Utils.getFileContents(treeFile));
+
+        File treeFile2 = new File("./objects/" + dirTree2.getSha());
+
+        assertEquals("blob : 6e024e7c960af207eb62ee22492e5a2e2f43d11d : test1.txt\n"
+                + //
+                "blob : 2cc6e72f9bcfb65337b441d909835943ae5e944 : test.txt\n" + //
+                "tree : 1c05d283db6a7c2f7a9712f713565ad20b59d2f4 : testD",
+                Utils.getFileContents(treeFile));
+        assertEquals("blob : 6e024e7c960af207eb62ee22492e5a2e2f43d11d : test1.txt\n" + //
+                "blob : 2cc6e72f9bcfb65337b441d909835943ae5e944 : test.txt\n" + // +
+                "tree : 7e4c4e6ffbe32d7e4f445ac1d6ade008d1869acf : testD\n" + //
+                "tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : testD2", Utils.getFileContents(treeFile2));
+
     }
 }
