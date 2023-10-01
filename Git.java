@@ -8,8 +8,11 @@ public class Git {
     public static void main(String[] args) throws Exception {
         Git git = new Git();
         git.init();
+        // git.add("contents.txt");
         git.add("test1.txt");
-        git.add("test2.txt");
+        // git.delete("contents.txt");
+        // git.addDirectory("penis");
+        // git.delete("penis");
 
     }
 
@@ -38,10 +41,31 @@ public class Git {
         if (file.length() != 0) {
             bufferedWriter.write('\n');
         }
-        bufferedWriter.write(fileName + " : " + sha);
+        bufferedWriter.write("blob : " + sha + " : " + fileName);
         bufferedWriter.close();
         fileWriter.close();
 
+    }
+
+    public void addDirectory(String directory) throws Exception {
+
+        Tree tree = new Tree();
+        tree.addDirectory(directory);
+        tree.writeToTree();
+        String sha = tree.getSha();
+        if (existsAlready(directory, sha)) {
+            return;
+        }
+
+        FileWriter fileWriter = new FileWriter("index", true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        File file = new File("index");
+        if (file.length() != 0) {
+            bufferedWriter.write('\n');
+        }
+        bufferedWriter.write("tree : " + sha + " : " + directory);
+        bufferedWriter.close();
+        fileWriter.close();
     }
 
     public void delete(String fileName) throws IOException {
@@ -52,15 +76,23 @@ public class Git {
         BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
 
         String line;
+        Boolean isFirst = true;
         while (br.ready()) {
             line = br.readLine();
 
             // splits at the space, your welcome
             String[] name = line.split("\\s+");
 
-            if (!name[0].equals(fileName)) {
+            if (!name[4].equals(fileName)) {
+                if (!isFirst) {
+                    bw.write('\n');
+
+                }
+                isFirst = false;
                 bw.write(line);
-                bw.write('\n');
+                // if (br.ready()) {
+                // bw.write('\n');
+                // }
             } else {
                 System.out.println("ran");
                 File deleteFile = new File("./objects/" + name[2]);
@@ -82,7 +114,7 @@ public class Git {
         while (br.ready()) {
             line = br.readLine();
             String[] name = line.split("\\s+");
-            if (name[0].equals(fileName) && name[2].equals(hash)) {
+            if (name[4].equals(fileName) && name[2].equals(hash)) {
                 br.close();
                 return true;
             }

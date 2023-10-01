@@ -22,6 +22,7 @@ public class BlobTest {
     static void tearDownAfterClass() throws Exception {
         Utils.deleteFile("test1.txt");
         Utils.deleteFile("test2.txt");
+        Utils.deleteFile("test3.txt");
         Utils.deleteFile("index");
         Utils.deleteDirectory("./objects");
     }

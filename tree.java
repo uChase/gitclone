@@ -17,7 +17,9 @@ public class Tree {
 
     public static void main(String[] args) throws Exception {
         Tree tree = new Tree();
-        tree.addDirectory("./test/");
+
+        tree.addDirectory("./penis/");
+        tree.writeToTree();
     }
 
     public Tree() {

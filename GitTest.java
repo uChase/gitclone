@@ -21,6 +21,7 @@ public class GitTest {
     static void tearDownAfterClass() throws Exception {
         Utils.deleteFile("test1.txt");
         Utils.deleteFile("test2.txt");
+        Utils.deleteFile("testFile");
         Utils.deleteFile("index");
         Utils.deleteDirectory("./objects");
     }
@@ -46,7 +47,7 @@ public class GitTest {
         assertTrue("Blob is not created", file1.exists());
 
         File index = new File("index");
-        assertEquals("Index does not have file", Utils.getFileContents(index), "test1.txt : " + hash1);
+        assertEquals("Index does not have file", Utils.getFileContents(index), "blob : " + hash1 + " : " + "test1.txt");
     }
 
     @Test

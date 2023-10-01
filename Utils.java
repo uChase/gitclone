@@ -58,7 +58,6 @@ public class Utils {
             contents.append((char) reader.read());
         }
         reader.close();
-        System.out.println(contents.toString());
         return contents.toString();
     }
 

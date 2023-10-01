@@ -75,6 +75,7 @@ public class TreeTest {
         deleteDirectory(testDir2);
         Path objects = Path.of("./objects/");
         deleteDirectory(objects);
+        Utils.deleteFile("contents.txt");
 
     }
 

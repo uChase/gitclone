@@ -19,6 +19,8 @@ public class CommitTest {
             subfile.delete();
         }
         objects.delete();
+        File HEAD = new File("HEAD");
+        HEAD.delete();
     }
 
     @Test
@@ -26,16 +28,16 @@ public class CommitTest {
         Commit test = new Commit("wowza!!!!!!", "big shaq");
         test.commitAndWrite();
 
-        //set up
+        // set up
         FileWriter commit = new FileWriter("objects/commit");
         BufferedWriter writeToCommit = new BufferedWriter(commit);
-            
+
         writeToCommit.append("da39a3ee5e6b4b0d3255bfef95601890afd80709\n");
         writeToCommit.append("\n");
         writeToCommit.append("\n");
         writeToCommit.append("big shaq\n");
         writeToCommit.append(test.getDate() + "\n");
-        writeToCommit.write("wowza!!!!!!"); 
+        writeToCommit.write("wowza!!!!!!");
         writeToCommit.close();
 
         String sha = Blob.generateSHA("objects/commit");
