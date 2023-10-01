@@ -20,7 +20,7 @@ public class Commit {
 
     public static void main(String[] args) throws Exception {
         Commit test = new Commit("this is a test commit", "William Abraham");
-        test.commitAndWrite();
+        // test.commitAndWrite();
     }
 
     public Commit(String parentCommit, String summary, String author) throws Exception {
@@ -33,13 +33,22 @@ public class Commit {
 
     // optional constructor without parentCommit parameter
     public Commit(String summary, String author) throws Exception {
+        try {
+            String parent = Utils.getFileContents(new File("HEAD"));
+            if (parent != "") {
+                this.parentCommit = parent;
+            }
+        } catch (Exception e) {
+            System.out.println("penis");
+        }
         this.summary = summary;
         this.author = author;
         treeSha = createTree();
+
         this.date = new Date(java.lang.System.currentTimeMillis());
     }
 
-    public void commitAndWrite() throws NoSuchAlgorithmException {
+    public void commitAndWrite() throws Exception {
         try {
             FileWriter commit = new FileWriter("objects/commit");
             BufferedWriter writeToCommit = new BufferedWriter(commit);
@@ -63,6 +72,24 @@ public class Commit {
             BufferedWriter writer = new BufferedWriter(headFile);
             writer.write(sha);
             writer.close();
+            if (parentCommit != "") {
+                Commit.addNext(parentCommit, sha);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addNext(String previous, String next) throws Exception {
+        try {
+            String read = Utils.readFromCompressedFile(new File("./objects/" + previous));
+
+            String[] lines = read.split("\\r?\\n");
+
+            String content = (lines[0] + "\n" + lines[1] + "\n" + next + "\n" + lines[3] + "\n" + lines[4]
+                    + "\n" + lines[5]);
+            byte[] compressed = Blob.compressToBinary(content);
+            Blob.writeToFile(compressed, "./objects/" + previous);
         } catch (IOException e) {
             e.printStackTrace();
         }
