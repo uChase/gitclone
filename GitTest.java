@@ -51,13 +51,12 @@ public class GitTest {
     }
 
     @Test
-    void testDelete() throws Exception {
+    void testRemove() throws Exception {
         git.init();
         git.add("test1.txt");
-        git.delete("test1.txt");
-        File objects = new File("./objects");
-        String[] list = objects.list();
-        assertEquals("Blob is not removed", 0, list.length);
+        git.remove("test1.txt");
+        String index = Utils.getFileContents(new File("index"));
+        assertEquals("Blob is not removed", "", index);
     }
 
 }

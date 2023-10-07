@@ -27,6 +27,13 @@ public class Utils {
 
     }
 
+    public static void makeDir(String dirName) {
+        File dir = new File(dirName);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+    }
+
     public static void writeStringToFile(String filename, String contents) throws IOException {
 
         File file = new File(filename);

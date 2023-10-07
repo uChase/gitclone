@@ -1,0 +1,6 @@
+1. my commits are hashed so i cannot provide screenshots, but there is a decompress function in my utils that
+   works so theres that, also check out my testers they should show working stuff.
+2. I did all of the delete and edit functionality in the commit class and since the core functionality of this project works I dont
+   really feel like moving the stuff to the tree file b/c I did some recursion stuff and it would be a little annoying to transfer (but possible). So in your private tester when testing the trees test the trees of the commits
+3. I know you said dont worry about recursion but we need recursion to delete files from the top layer of other commits trees, like say I am on my third commit and want to delete something from my first commit, we need recursion. I implemented a tree* thing to the tree file of the commit which will point to the tree that next parent tree that has relevent info that was not copied over. Example: say i am on my fourth commit and delete smthn from commit three, all of commit threes content will be copied over to commit 4, so to acssess the data from previous commits I need to skip over the commit three tree and go straight to the commit two tree, and that is what the tree* points to.
+   Thats all, also I made a second tester for the delete and edit tests. email me if you got any questions or concerns. Happy Hacking!

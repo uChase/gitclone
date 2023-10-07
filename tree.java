@@ -149,9 +149,7 @@ public class Tree {
             }
         }
 
-        if (isRecursion) {
-            writeToTree();
-        }
+        writeToTree();
 
         return getSha();
     }
