@@ -236,7 +236,7 @@ public class Git {
     }
 
     private void checkoutRecursive(String treeSha, String folder) throws Exception {
-        if (folder != "") {
+        if (!folder.equals("")) {
             Utils.makeDir(folder);
         }
         String mainContents = Utils.getFileContents(new File("./objects/" + treeSha));
@@ -246,7 +246,12 @@ public class Git {
             String[] split = line.split("\\s+");
             if (split[0].equals("blob")) {
                 String contents = Utils.readFromCompressedFile(new File("./objects/" + split[2]));
-                Utils.writeStringToFile(folder + "/" + split[4], contents);
+                if (!folder.equals("")) {
+                    Utils.writeStringToFile(folder + "/" + split[4], contents);
+                } else {
+                    Utils.writeStringToFile(split[4], contents);
+
+                }
 
             } else if (split[0].equals("tree") && split.length == 5) {
                 checkoutRecursive(split[2], folder + "/" + split[4]);
